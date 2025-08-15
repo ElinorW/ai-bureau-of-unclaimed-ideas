@@ -9,3 +9,32 @@ body {
   background-color: #f7f2e7;
   color: #1a1a1a;
 }
+
+/* Bureau stamp animation */
+@keyframes bureau-stamp {
+  0%   { transform: scale(2) rotate(-6deg); opacity: 0; }
+  60%  { transform: scale(0.98) rotate(-6deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-6deg); opacity: 1; }
+}
+
+/* Subtle tiled watermark behind the report */
+.bureau-watermark {
+  position: relative;
+  overflow: hidden;
+}
+.bureau-watermark::before {
+  content: "CONFIDENTIAL  •  CONFIDENTIAL  •  CONFIDENTIAL";
+  position: absolute;
+  inset: -20%;
+  transform: rotate(-24deg);
+  font-weight: 700;
+  letter-spacing: .2em;
+  color: rgba(128, 0, 0, 0.06);
+  font-size: 3rem;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  user-select: none;
+  text-transform: uppercase;
+}
+
