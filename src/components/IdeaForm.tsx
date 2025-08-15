@@ -3,24 +3,37 @@ import axios from 'axios';
 
 const IdeaForm = ({ onSubmit }: { onSubmit: (report: string) => void }) => {
   const [idea, setIdea] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await axios.post('/api/generateReport', { idea });
-    onSubmit(response.data.report);
+    setLoading(true);
+    try {
+      const response = await axios.post('/api/generateReport', { idea });
+      onSubmit(response.data.report);
+    } catch (err) {
+      alert("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-4">
+    <form onSubmit={handleSubmit}>
+      <label className="block text-sm font-semibold mb-1">Your Half-Baked Idea</label>
       <textarea
         value={idea}
         onChange={(e) => setIdea(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded mb-2"
+        className="w-full p-2 border border-black rounded bg-[#fffdf5] mb-4"
         rows={4}
-        placeholder="Enter your half-baked idea here..."
+        placeholder="e.g. An app that only works when you're sad..."
       />
-      <button type="submit" className="bg-black text-white px-4 py-2 rounded">
-        Submit to the Bureau
+      <button
+        type="submit"
+        className="uppercase px-4 py-2 border border-black bg-black text-white font-bold hover:bg-white hover:text-black transition"
+        disabled={loading}
+      >
+        {loading ? 'Submitting...' : 'Submit to the Bureau'}
       </button>
     </form>
   );
